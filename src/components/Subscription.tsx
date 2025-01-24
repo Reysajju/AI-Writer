@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Check, Zap, Rocket, Crown } from 'lucide-react';
+import { SubscriptionPayment } from './SubscriptionPayment';
 
 const plans = [
   {
@@ -50,10 +51,16 @@ const plans = [
 ];
 
 export function Subscription() {
-  const handleSubscribe = (planName: string) => {
-    // Handle subscription logic here
-    console.log(`Subscribing to ${planName} plan`);
-  };
+  const [selectedPlan, setSelectedPlan] = useState<typeof plans[0] | null>(null);
+
+  if (selectedPlan) {
+    return (
+      <SubscriptionPayment
+        plan={selectedPlan}
+        onBack={() => setSelectedPlan(null)}
+      />
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 animate-fade-in">
@@ -100,7 +107,7 @@ export function Subscription() {
               </ul>
 
               <button
-                onClick={() => handleSubscribe(plan.name)}
+                onClick={() => setSelectedPlan(plan)}
                 className={`mt-8 w-full py-3 px-6 rounded-lg font-semibold text-white bg-gradient-to-r ${
                   plan.color
                 } hover:opacity-90 transition-opacity`}
